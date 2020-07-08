@@ -1,19 +1,22 @@
 package se.lexicon.zainabahmed;
 import java.util.Scanner;
-import java.util.Random;
 import java.lang.Math;
-
+import java.util.Arrays;
+//import java.util.Random;
 
 /**
- WEEK ONE
- CALCULATOR ASSIGNMENT
+ WEEK TWO ASSIGNMENT: ARRAYS AND JUNIT
+ Junit tested the division method for dividing with Zero (No exception crash allowed)
+ Each mathematical operation testable by Junit.
+ -Overloaded methods for Addition & Subtraction that accepts an array
+ as input parameter.
+ CALCULATOR
  Menu driven console based basic arithmetic calculator
  Addition, subtraction, multiplication and division.
  Runs until user chooses to exit
  Addition and subtraction handle any number of parameters
  Each mathematical operation has it's own method
  Loops and switch case menu based interface
-
  */
 public class App
 {
@@ -22,7 +25,7 @@ public class App
     public static void main( String[] args )
     {
 
-        System.out.println( "Welcome to the Calculator!" );
+        System.out.println( "Welcome to the Calculator! (press 'x' to exit)" );
         String stopRunning = "n";
         while (stopRunning.equalsIgnoreCase("n"))    //N,n for 'no, continue', Y,y for 'yes, exit'.
         {
@@ -37,8 +40,17 @@ public class App
                 case 'A':
                 case 'a':
                 case '+':
-                    operationAdd();
-                    //System.out.println("The total sum is " + operationAdd());
+                    System.out.println("How many numbers (terms) do you want to add? (If unsure, enter 0.)");
+                    scanner.nextLine(); // clearing any \n errors that causes it to exit without taking input
+                    int userAdditionChoice = getUserIntegerInput();
+                    if (userAdditionChoice ==0)  // if number of terms not defined, we call the addition method
+                    {
+                        operationAdd();
+                    }
+                    else  // overloaded version of addition method taking array input called if number of terms defined
+                    {
+                        System.out.println("The total sum is " + operationAdd(getUserArrayInput(userAdditionChoice)));
+                    }
                     break;
                 case 'M':
                 case 'm':
@@ -55,16 +67,28 @@ public class App
                 case 'S':
                 case 's':
                 case '-':
-                    operationSubtract();
-                    //System.out.println("The final difference is " + operationSubtract());
+                    System.out.println("How many numbers (terms) do you want to subtract? (If unsure, enter 0.)");
+                    scanner.nextLine(); // clearing any \n errors that causes it to exit without taking input
+                    int userSubtractionChoice = getUserIntegerInput();
+                    if (userSubtractionChoice ==0)  // if number of terms not defined, we call the subtraction method
+                    {
+                        operationSubtract();
+                    }
+                    else  // overloaded version of subtraction method taking array input called if number of terms defined
+                    {
+                        System.out.println("The total difference is " + operationSubtract(getUserArrayInput(userSubtractionChoice)));
+                    }
+                    break;
+                case 'X':
+                case 'x':
+                    stopRunning = askIfExit();
+                    //stopRunning = "y";
                     break;
                 default:
                     System.out.println("Error: only +, *, /, - are supported. ");
             }
-
-
             //USER OPTION TO EXIT
-            stopRunning = askIfExit();  //take user input to exit or continue. N for 'no, continue', Y for 'yes, exit'.
+            //stopRunning = askIfExit();  //take user input to exit or continue. N for 'no, continue', Y for 'yes, exit'.
             //System.out.print("stopRunning = " + stopRunning); // testing my code
         }
     }
@@ -73,7 +97,7 @@ public class App
         //scanner.nextLine(); // clearing any \n errors that causes it to exit without taking input
         System.out.print("Please enter a whole number: ");
         String userInput = scanner.nextLine();
-        return Integer.valueOf(userInput);
+        return Integer.parseInt(userInput);
     }
     public static double getUserDoubleInput()    // method to get decimal input from user
     {
@@ -83,9 +107,20 @@ public class App
         double userDecimal = Double.parseDouble(userInput);
         return userDecimal;
     }
+    public static int[] getUserArrayInput(int sizeOfArray)    // method to save user input to array
+    {
+        int[] myArraySize = new int[sizeOfArray];  // create the array of user defined size
+        System.out.println("Enter " + sizeOfArray + " numbers: ");
+        for (int i = 0; i<sizeOfArray; i++)
+        {
+        System.out.println("Enter number " + (int)(i+1) );
+        myArraySize[i] = Integer.parseInt(scanner.nextLine());
+        }
+        return myArraySize;
+    }
     public static void operationAdd()
     {
-        scanner.nextLine(); // clearing any \n errors that causes it to exit without taking input
+        //scanner.nextLine(); // clearing any \n errors that causes it to exit without taking input
         System.out.println("Addition. (press 0 to calculate, when all the terms have been entered) ");
         int userAdditionInput = 1, sumTotal =0;
 
@@ -99,9 +134,20 @@ public class App
         //return sumTotal;
 
     }
+    //OVERLOADED addition method to accept array input
+    public static int operationAdd(int[] inputArray)
+    {
+        System.out.println("Addition of " + inputArray.length + " numbers.");
+        int sumTotal =0;
+        for (int element : inputArray)
+        {
+            sumTotal += element;
+        }
+        return sumTotal;
+    }
     public static void operationSubtract()  // void method, not returning value, printing result in value
     {
-        scanner.nextLine(); // clearing any \n errors that causes it to exit without taking input
+        //scanner.nextLine(); // clearing any \n errors that causes it to exit without taking input
         System.out.println("Subtraction. (press 0 to calculate, when all the terms have been entered) ");
         int userSubtractionInput = 1, finalDifference =getUserIntegerInput();   // first term (minuend) entered is saved to final result
 
@@ -114,10 +160,23 @@ public class App
         System.out.println("The final difference is " + finalDifference);
         //return finalDifference;
     }
+    //OVERLOADED subtraction method to accept array input
+    public static int operationSubtract(int[] inputArray)
+    {
+    int finalDifference = inputArray[0]; //, counter = 0;
+    //System.out.println("finalDifference " + finalDifference + " inputArray[0] " + inputArray[0] ); //testing my code
+    for (int i =1; i < inputArray.length; i++)
+        {
+        finalDifference -= inputArray[i];
+        //System.out.println("finalDifference " +finalDifference + " current  " +inputArray[i] + " array " + inputArray[counter] ); //testing my code
+        //counter++;
+        }
+    return finalDifference;
+    }
     public static void operationMultiply() // void method, printing result from within method
     {
         scanner.nextLine(); // clearing any \n errors that causes it to exit without taking input
-        System.out.println("Multiplication. ");
+        System.out.println("Multiplication of two numbers. ");
         double firstFactor = getUserDoubleInput();
         double secondFactor = getUserDoubleInput();
         double rawProduct, finalProduct;
