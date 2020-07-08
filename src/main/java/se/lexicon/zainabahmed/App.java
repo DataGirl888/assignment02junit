@@ -193,9 +193,14 @@ public class App
     {
         scanner.nextLine(); // clearing any \n errors that causes it to exit without taking input
         System.out.println("Division. ");
+        double finalQuotient;
         double firstDividend = getUserDoubleInput();
         double secondDivisor = getUserDoubleInput();
-        double finalQuotient;
+        while (secondDivisor == 0)   // to avoid divide by zero error, user prompted to enter non-zero divisor
+        {
+            System.out.println("Divide by 0 is infinity! Please enter another (non-zero) number as divisor: ");
+            secondDivisor =  getUserDoubleInput();
+        }
 
         finalQuotient = firstDividend / secondDivisor;  // not rounding this, as in multiplication, was not mentioned as requirement
         System.out.println("The quotient is " + finalQuotient );
